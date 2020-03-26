@@ -1,0 +1,19 @@
+<div *ngIf="!waitService.loading || editing" class="profile">
+    <div class="profile__inner">
+        <div class="profile__row">
+            <div class="profile__title">
+                Welcome, <br><span>{{userService.currentUser.name}}</span>!
+            </div>
+            <button class="profile__logout" mat-raised-button color="primary" (click)="onLogOut()">Log out</button>
+        </div>
+        
+        <mat-tab-group dynamicHeight class="profile__navbar" [selectedIndex]="tabIndex" (selectedIndexChange)="tabIndex = $event">
+            <mat-tab label="My cards">
+                <app-cards-list (isEditing)="isEditingChanged($event)" (onZeroCreate)="onZeroCreate()"></app-cards-list>
+            </mat-tab>
+            <mat-tab label="Create new card">
+                <app-cards-new (isEditing)="isEditingChanged($event)"></app-cards-new>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

@@ -1,0 +1,99 @@
+<div class="zero" *ngIf="userService.currentUser.cards.length === 0">
+    <div class="zero__title">
+        There are no cards yet!
+    </div>
+    <button class="zero__create" mat-raised-button color="primary" (click)="onZeroCreate.emit()">
+        Create new card
+    </button>
+</div>
+
+<div class="list" *ngIf="userService.currentUser.cards.length > 0">
+    <mat-accordion>
+        <mat-expansion-panel [disabled]="editing"
+            *ngFor="let card of userService.currentUser.cards; let i = index; trackBy: trackByIndex">
+            <mat-expansion-panel-header>
+                <mat-panel-title>/{{card.link}}</mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <mat-card *ngIf="!editing">
+                <mat-card-title>
+                    <div class="card-name">
+                        {{card.name}}
+                    </div>
+                    <div class="delete-button mobile">
+                        <mat-icon class="delete-icon" (click)="onDelete(i)">delete</mat-icon>
+                    </div>
+                </mat-card-title>
+                <mat-card-subtitle>{{card.annotation}}</mat-card-subtitle>
+                <mat-card-content>
+                    <mat-chip-list>
+                        <mat-chip href *ngFor="let link of card.links" color="primary" selected
+                            (click)="onLinkOpen(link.url)">
+                            <span>{{link.title}}</span>
+                        </mat-chip>
+                    </mat-chip-list>
+                </mat-card-content>
+                <mat-card-actions>
+                    <button mat-button (click)="onOpen(card)">OPEN</button>
+                    <button mat-button (click)="onCopyURL(card.link)">COPY URL</button>
+                    <button class="last" mat-button (click)="onEdit(card)">EDIT</button>
+                    <div class="spacer"></div>
+                    <div class="delete-button desktop">
+                        <button class="last" mat-button (click)="onDelete(i)">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+                    </div>
+                </mat-card-actions>
+            </mat-card>
+
+            <mat-card *ngIf="editing">
+                <form #editForm="ngForm" autocomplete="off">
+                    <mat-card-subtitle>Edit info</mat-card-subtitle>
+                    <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput required maxlength="20" name="name" [(ngModel)]="editingCard.name"
+                            #name="ngModel" [disabled]="waitService.loading">
+                        <mat-hint align="end">{{editingCard.name.length}} / 20</mat-hint>
+                        <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.required">Name is required
+                        </mat-error>
+                        <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Name must not be
+                            longer
+                            than 20 characters</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <mat-label>Annotation</mat-label>
+                        <input matInput required maxlength="80" name="annotation" [(ngModel)]="editingCard.annotation"
+                            #annotation="ngModel" [disabled]="waitService.loading">
+                        <mat-hint align="end">{{editingCard.annotation.length}} / 80</mat-hint>
+
+                        <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.required">
+                            Annotation is
+                            required</mat-error>
+                        <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.maxlength">
+                            Annotation
+                            must not be longer than 80 characters</mat-error>
+                    </mat-form-field>
+                    <div class="links-space"></div>
+                    <mat-card-subtitle>Edit links</mat-card-subtitle>
+                    <mat-chip-list>
+                        <mat-chip *ngFor="let link of editingCard.links; index as j" color="primary" selected
+                            (click)="editLink(j, editForm)">
+                            <span>{{link.title}}</span>
+                            <div class="edit-icon">
+                                <mat-icon>edit</mat-icon>
+                            </div>
+                        </mat-chip>
+                        <mat-chip color="accent" (click)="editLink(editingCard.links.length, editForm)">
+                            <span>Add link</span>
+                        </mat-chip>
+                    </mat-chip-list>
+                </form>
+                <mat-card-actions>
+                    <button mat-button (click)="onSave(i)"
+                        [disabled]="editForm.invalid || waitService.loading">SAVE</button>
+                    <button mat-button (click)="onCancel()" [disabled]="waitService.loading">CANCEL</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>

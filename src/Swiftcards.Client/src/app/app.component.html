@@ -1,0 +1,9 @@
+<app-header class="solid" *ngIf="!hideService.hide"></app-header>
+
+<mat-progress-bar class="solid" [style.visibility]="waitService.loading ? 'visible' : 'hidden'" mode="indeterminate" color="accent"></mat-progress-bar>
+
+<router-outlet></router-outlet>
+
+<div class="spacer"></div>
+
+<div *ngIf="!hideService.hide" class="signature solid noselect">Copyright © 2020 | by moorware | <a class="link" href="https://github.com/moorware" target="_blank">GitHub</a></div>

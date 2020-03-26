@@ -1,0 +1,23 @@
+<div class="mat-elevation-z6">
+    <mat-toolbar color="primary">
+        <mat-toolbar-row>
+            <div class="header">
+                <a routerLink="">Swiftcards</a>
+
+                <a *ngIf="!userService.currentUser" class="account" routerLink="signin">
+                    <span>Sign in</span>
+                    <div class="account__icon">
+                        <mat-icon>account_circle</mat-icon>
+                    </div>
+                </a>
+
+                <a *ngIf="userService.currentUser" class="account" routerLink="me">
+                    <span>{{userService.currentUser.name}}</span>
+                    <div class="account__icon">
+                        <mat-icon>account_circle</mat-icon>
+                    </div>
+                </a>
+            </div>
+        </mat-toolbar-row>
+    </mat-toolbar>
+</div>

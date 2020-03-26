@@ -1,0 +1,11 @@
+.step-nav {
+    margin-top: 10px;
+}
+
+.mat-stepper-horizontal, .mat-stepper-vertical {
+    background: none;
+}
+
+.step-form {
+    margin-top: 10px;
+}

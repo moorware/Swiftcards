@@ -1,0 +1,51 @@
+<div class="view">
+    <div class="auth__inner">
+        <div class="auth__title">
+            Sign up
+        </div>
+        <div class="auth__annotation">
+            Have an account? <a routerLink="/signin" class="auth__register">Sign in</a>
+        </div>
+        <form class="auth__form" #signupForm="ngForm" (ngSubmit)="onSubmit()" [mustMatch]="['password', 'confirmPassword']" autocomplete="off">
+            <mat-form-field class="auth__field" appearance="fill">
+                <mat-label>Username</mat-label>
+
+                <input [disabled]="waitService.loading" matInput #name="ngModel" id="name" name="name" pattern="[a-zA-Z0-9._]*" [(ngModel)]="model.name" (ngModelChange)="onNameChange()" minlength="4" maxlength="15" required >
+                
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.required">Username is required</mat-error>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.pattern && !name.errors?.required">Username contains invalid characters</mat-error>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.minlength && !(name.errors?.required || name.errors?.pattern)">Username must be at least 4 characters long</mat-error>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.maxlength && !name.errors?.pattern">Username must not be longer than 15 characters</mat-error>
+                
+            </mat-form-field>
+
+            <mat-form-field class="auth__field" appearance="fill">
+                <mat-label>Password</mat-label>
+
+                <input [disabled]="waitService.loading" type="password" matInput #password="ngModel" id="password" name="password" [(ngModel)]="model.password" minlength="6" maxlength="30" required >
+                
+                <mat-error *ngIf="(password.dirty || password.touched) && password.errors?.required">Password is required</mat-error>
+                <mat-error *ngIf="(password.dirty || password.touched) && password.errors?.minlength && !password.errors?.required">Password must be at least 6 characters long</mat-error>
+                <mat-error *ngIf="(password.dirty || password.touched) && password.errors?.maxlength">Password must not be longer than 30 characters</mat-error>
+                
+            </mat-form-field>
+
+            <mat-form-field class="auth__field" appearance="fill">
+                <mat-label>Confirm password</mat-label>
+
+                <input [disabled]="waitService.loading" type="password" matInput #confirmPassword="ngModel" id="confirmPassword" name="confirmPassword" [(ngModel)]="model.confirmPassword" required >
+                
+                <mat-error *ngIf="(confirmPassword.dirty || confirmPassword.touched) && (confirmPassword.errors?.mustMatch || confirmPassword.errors?.required)">Passwords do not match</mat-error>
+            </mat-form-field>
+
+            <div class="auth__spacer"></div>
+
+            <div class="auth__row">
+                <button class="auth__submit" mat-raised-button color="primary" [disabled]="signupForm.invalid || waitService.loading">Sign up</button>
+                <div class="auth__error">{{error}}</div>
+            </div>
+
+            
+        </form>
+    </div>
+</div>

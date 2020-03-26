@@ -1,0 +1,23 @@
+.header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.account {
+    display: flex;
+    align-items: center;
+}
+
+.account__icon {
+    margin-left: 10px;
+    height: 32px;
+    width: 32px;
+}
+
+.account__icon mat-icon {
+    font-size: 32px;
+    color: white;
+}

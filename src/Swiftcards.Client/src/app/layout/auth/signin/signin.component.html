@@ -1,0 +1,31 @@
+<div class="view">
+    <div class="auth__inner">
+        <div class="auth__title">
+            Sign in
+        </div>
+        <div class="auth__annotation">
+            New user? <a routerLink="/signup" class="auth__register">Create an account</a>
+        </div>
+        <form class="auth__form" #signinForm="ngForm" (ngSubmit)="onSubmit()" autocomplete="off">
+            <mat-form-field class="auth__field" appearance="fill">
+                <mat-label>Username</mat-label>
+                <input [disabled]="waitService.loading" matInput #name="ngModel" id="name" name="name" [(ngModel)]="model.name" (ngModelChange)="onChange()" required >
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.required">Username is required</mat-error>
+            </mat-form-field>
+
+            <mat-form-field class="auth__field" appearance="fill">
+                <mat-label>Password</mat-label>
+
+                <input [disabled]="waitService.loading" type="password" matInput #password="ngModel" id="password" name="password" [(ngModel)]="model.password" (ngModelChange)="onChange()" required >
+                <mat-error *ngIf="(password.dirty || password.touched) && password.errors?.required">Password is required</mat-error>
+            </mat-form-field>
+
+            <div class="auth__spacer"></div>
+
+            <div class="auth__row">
+                <button class="auth__submit" mat-raised-button color="primary" [disabled]="model.name === '' || model.password === '' || waitService.loading">Sign in</button>
+                <div class="auth__error">{{error}}</div>
+            </div>
+        </form>
+    </div>
+</div>

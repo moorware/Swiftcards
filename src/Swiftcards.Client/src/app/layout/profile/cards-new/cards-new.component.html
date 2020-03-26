@@ -1,0 +1,185 @@
+<mat-horizontal-stepper *ngIf="!mobile" [linear]="true" (selectionChange)="onStepperSelectionChange($event)">
+    <mat-step [stepControl]="nameForm">
+        <form class="step-form" #nameForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Fill out name</ng-template>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput required maxlength="20" id="name" name="name" [(ngModel)]="model.name"
+                    #name="ngModel" [disabled]="waitService.loading">
+                <mat-hint align="start">Full name or nickname</mat-hint>
+                <mat-hint align="end">{{model.name.length}} / 20</mat-hint>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.required">Name is required
+                </mat-error>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Name must not be longer
+                    than 20 characters</mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="annotationForm">
+        <form class="step-form" #annotationForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Fill out annotation</ng-template>
+            <mat-form-field>
+                <mat-label>Annotation</mat-label>
+                <input matInput required maxlength="80" id="annotation" name="annotation" [(ngModel)]="model.annotation"
+                    #annotation="ngModel" [disabled]="waitService.loading">
+                <mat-hint align="start">Speciality, profession, etc.</mat-hint>
+                <mat-hint align="end">{{model.annotation.length}} / 80</mat-hint>
+
+                <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.required">Annotation is
+                    required</mat-error>
+                <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.maxlength">Annotation
+                    must not be longer than 80 characters</mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="linksForm">
+        <form class="step-form" #linksForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Add links</ng-template>
+
+            <mat-chip-list>
+                <mat-chip *ngFor="let link of model.links; index as i" color="primary" selected (click)="editLink(i)">
+                    <span>{{link.title}}</span>
+                    <div class="edit-icon">
+                        <mat-icon>edit</mat-icon>
+                    </div>
+                </mat-chip>
+                <mat-chip color="accent" (click)="editLink(model.links.length)">
+                    <span>Add link</span>
+                </mat-chip>
+            </mat-chip-list>
+
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="linkForm">
+        <form class="step-form" #linkForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Publish</ng-template>
+            <mat-form-field>
+                <mat-label>Short link</mat-label>
+                <input matInput required pattern="[a-zA-Z0-9]*" minlength="5" maxlength="10" id="link" name="link"
+                    [(ngModel)]="model.link" (ngModelChange)="onLinkChange()" #link="ngModel" [disabled]="waitService.loading" >
+                <mat-hint class="ellipsis" align="start">{{origin}}/{{model.link.length > 0 ? model.link : '...'}}</mat-hint>
+                <mat-hint class="solid" align="end">{{model.link.length}} / 10</mat-hint>
+
+                <mat-error *ngIf="link.errors?.linkTaken">Link '{{model.link}}' is already taken</mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.required">Link is required</mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.pattern && !link.errors?.required">
+                    Link contains invalid characters
+                </mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.minlength && !(link.errors?.required || link.errors?.pattern)">
+                    Link must be at least 5 characters long
+                </mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.maxlength && !link.errors?.pattern">
+                    Link must not be longer than 10 characters
+                </mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="onSubmit()" [disabled]="waitService.loading">Done</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-horizontal-stepper>
+
+<mat-vertical-stepper *ngIf="mobile" [linear]="true" (selectionChange)="onStepperSelectionChange($event)">
+    <mat-step [stepControl]="nameForm">
+        <form class="step-form" #nameForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Fill out name</ng-template>
+            <mat-form-field>
+                <mat-label>Name</mat-label>
+                <input matInput required maxlength="20" id="name" name="name" [(ngModel)]="model.name"
+                    #name="ngModel" [disabled]="waitService.loading">
+                <mat-hint align="start">Full name or nickname</mat-hint>
+                <mat-hint align="end">{{model.name.length}} / 20</mat-hint>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.required">Name is required
+                </mat-error>
+                <mat-error *ngIf="(name.dirty || name.touched) && name.errors?.maxlength">Name must not be longer
+                    than 20 characters</mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="annotationForm">
+        <form class="step-form" #annotationForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Fill out annotation</ng-template>
+            <mat-form-field>
+                <mat-label>Annotation</mat-label>
+                <input matInput required maxlength="80" id="annotation" name="annotation" [(ngModel)]="model.annotation"
+                    #annotation="ngModel" [disabled]="waitService.loading">
+                <mat-hint align="start">Speciality, profession, etc.</mat-hint>
+                <mat-hint align="end">{{model.annotation.length}} / 80</mat-hint>
+
+                <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.required">Annotation is
+                    required</mat-error>
+                <mat-error *ngIf="(annotation.dirty || annotation.touched) && annotation.errors?.maxlength">Annotation
+                    must not be longer than 80 characters</mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="linksForm">
+        <form class="step-form" #linksForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Add links</ng-template>
+
+            <mat-chip-list>
+                <mat-chip *ngFor="let link of model.links; index as i" color="primary" selected (click)="editLink(i)">
+                    <span>{{link.title}}</span>
+                    <div class="edit-icon">
+                        <mat-icon>edit</mat-icon>
+                    </div>
+                </mat-chip>
+                <mat-chip color="accent" (click)="editLink(model.links.length)">
+                    <span>Add link</span>
+                </mat-chip>
+            </mat-chip-list>
+
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext>Next</button>
+            </div>
+        </form>
+    </mat-step>
+    <mat-step [stepControl]="linkForm">
+        <form class="step-form" #linkForm="ngForm" autocomplete="off">
+            <ng-template matStepLabel>Publish</ng-template>
+            <mat-form-field>
+                <mat-label>Short link</mat-label>
+                <input matInput required pattern="[a-zA-Z0-9]*" minlength="5" maxlength="10" id="link" name="link"
+                    [(ngModel)]="model.link" (ngModelChange)="onLinkChange()" #link="ngModel" [disabled]="waitService.loading" >
+                <mat-hint class="ellipsis" align="start">{{origin}}/{{model.link.length > 0 ? model.link : '...'}}</mat-hint>
+                <mat-hint class="solid" align="end">{{model.link.length}} / 10</mat-hint>
+
+                <mat-error *ngIf="link.errors?.linkTaken">Link '{{model.link}}' is already taken</mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.required">Link is required</mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.pattern && !link.errors?.required">
+                    Link contains invalid characters
+                </mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.minlength && !(link.errors?.required || link.errors?.pattern)">
+                    Link must be at least 5 characters long
+                </mat-error>
+                <mat-error *ngIf="(link.dirty || link.touched) && link.errors?.maxlength && !link.errors?.pattern">
+                    Link must not be longer than 10 characters
+                </mat-error>
+            </mat-form-field>
+            <div class="step-nav">
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="onSubmit()" [disabled]="waitService.loading">Done</button>
+            </div>
+        </form>
+    </mat-step>
+</mat-vertical-stepper>

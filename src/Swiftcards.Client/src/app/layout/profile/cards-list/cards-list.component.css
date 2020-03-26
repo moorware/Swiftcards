@@ -1,0 +1,88 @@
+.zero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+}
+
+.zero__title {
+    font-size: 18px;
+    margin-bottom: 20px;
+}
+
+.list {
+    margin-top: 20px;
+}
+
+.mat-card {
+    background: #4F4F4F;
+}
+
+.mat-card-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.card-name {
+    line-height: 24px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    margin-right: 10px;
+}
+
+.links-space {
+    height: 10px;
+}
+
+.mat-card-actions {
+    display: flex;
+    align-items: center;
+}
+
+.mat-card-actions .mat-button {
+    margin: 0 16px 0 0;
+    padding: 0;
+}
+
+.mat-card-actions .mat-button.last {
+    margin-right: 0;
+}
+
+.mat-card form {
+    margin-bottom: 10px;
+}
+
+.mat-form-field {
+    margin-bottom: 10px;
+    margin-right: 20px;
+}
+
+.delete-button.desktop {
+    display: flex;
+}
+
+.delete-button.mobile {
+    display: none;
+}
+
+.delete-button.desktop button {
+    padding: 0;
+    min-width: 36px;
+}
+
+@media screen and (max-width: 500px) {
+
+    .mat-card-actions .mat-button {
+        margin-right: 0;
+    }
+
+    .delete-button.desktop {
+        display: none;
+    }
+
+    .delete-button.mobile {
+        display: flex;
+    }
+}
